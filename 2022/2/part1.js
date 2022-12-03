@@ -2,57 +2,57 @@ const fs = require("fs/promises");
 
 async function run() {
   try {
-    const ROCK = 1;
-    const PAPER = 2;
-    const SCISSORS = 3;
+    const ROCK = "A";
+    const PAPER = "B";
+    const SCISSORS = "C";
 
     const WIN = 6;
     const DRAW = 3;
     const LOSS = 0;
 
-    function scoreForShape(shape) {
-      switch (shape) {
-        case "A":
-        case "X":
-          return ROCK;
-        case "B":
-        case "Y":
-          return PAPER;
-        case "C":
-        case "Z":
-          return SCISSORS;
-        default:
-          throw new Error(`Unexpected shape: ${shape}`);
-      }
-    }
+    const NORMALIZE_INPUT = {
+      X: "A",
+      Y: "B",
+      Z: "C",
+    };
 
-    function scoreForOutcome(opponentShape, ownShape) {
-      const scoreForOpponentShape = scoreForShape(opponentShape);
-      const scoreForOwnShape = scoreForShape(ownShape);
+    const SCORE_FOR_SHAPE = {
+      [ROCK]: 1,
+      [PAPER]: 2,
+      [SCISSORS]: 3,
+    };
 
-      if (
-        (scoreForOwnShape === ROCK && scoreForOpponentShape === SCISSORS) ||
-        (scoreForOwnShape === SCISSORS && scoreForOpponentShape === PAPER) ||
-        (scoreForOwnShape === PAPER && scoreForOpponentShape === ROCK)
-      ) {
-        return WIN;
-      }
-
-      if (scoreForOwnShape === scoreForOpponentShape) {
-        return DRAW;
-      }
-
-      return LOSS;
-    }
+    const CALCULATE_OUTCOME = {
+      [ROCK]: {
+        [ROCK]: DRAW,
+        [PAPER]: WIN,
+        [SCISSORS]: LOSS,
+      },
+      [PAPER]: {
+        [ROCK]: LOSS,
+        [PAPER]: DRAW,
+        [SCISSORS]: WIN,
+      },
+      [SCISSORS]: {
+        [ROCK]: WIN,
+        [PAPER]: LOSS,
+        [SCISSORS]: DRAW,
+      },
+    };
 
     // const data = await fs.readFile("./example.txt", { encoding: "utf8" });
     const data = await fs.readFile("./input.txt", { encoding: "utf8" });
 
     const result = data
       .split("\n")
-      .map((shapesStr) => shapesStr.split(" "))
-      .reduce((total, [s1, s2]) => {
-        return total + scoreForShape(s2) + scoreForOutcome(s1, s2);
+      .map((str) => str.split(" "))
+      .reduce((total, [opponentShape, ownShape]) => {
+        const normalizedOwnShape = NORMALIZE_INPUT[ownShape];
+        return (
+          total +
+          SCORE_FOR_SHAPE[normalizedOwnShape] +
+          CALCULATE_OUTCOME[opponentShape][normalizedOwnShape]
+        );
       }, 0);
 
     console.log(result);

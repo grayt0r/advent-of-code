@@ -6,60 +6,49 @@ async function run() {
     const PAPER = "B";
     const SCISSORS = "C";
 
-    const OUTCOME_WIN = "Z";
-    const OUTCOME_DRAW = "Y";
-    const OUTCOME_LOSS = "X";
+    const WIN = "Z";
+    const DRAW = "Y";
+    const LOSS = "X";
 
-    const SHAPES = {
-      [ROCK]: {
-        score: 1,
-        winsAgainst: SCISSORS,
-        losesTo: PAPER,
-      },
-      [PAPER]: {
-        score: 2,
-        winsAgainst: ROCK,
-        losesTo: SCISSORS,
-      },
-      [SCISSORS]: {
-        score: 3,
-        winsAgainst: PAPER,
-        losesTo: ROCK,
-      },
+    const SCORE_FOR_SHAPE = {
+      [ROCK]: 1,
+      [PAPER]: 2,
+      [SCISSORS]: 3,
     };
 
-    function shapeToPlayForOutcome(opponentShape, outcome) {
-      switch (outcome) {
-        case OUTCOME_WIN:
-          return SHAPES[opponentShape.losesTo];
-        case OUTCOME_DRAW:
-          return opponentShape;
-        case OUTCOME_LOSS:
-          return SHAPES[opponentShape.winsAgainst];
-      }
-    }
+    const SCORE_FOR_OUTCOME = {
+      [WIN]: 6,
+      [DRAW]: 3,
+      [LOSS]: 0,
+    };
 
-    function scoreForOutcome(outcome) {
-      switch (outcome) {
-        case OUTCOME_WIN:
-          return 6;
-        case OUTCOME_DRAW:
-          return 3;
-        case OUTCOME_LOSS:
-          return 0;
-      }
-    }
+    const SHAPE_FOR_OUTCOME = {
+      [ROCK]: {
+        [WIN]: PAPER,
+        [DRAW]: ROCK,
+        [LOSS]: SCISSORS,
+      },
+      [PAPER]: {
+        [WIN]: SCISSORS,
+        [DRAW]: PAPER,
+        [LOSS]: ROCK,
+      },
+      [SCISSORS]: {
+        [WIN]: ROCK,
+        [DRAW]: SCISSORS,
+        [LOSS]: PAPER,
+      },
+    };
 
     // const data = await fs.readFile("./example.txt", { encoding: "utf8" });
     const data = await fs.readFile("./input.txt", { encoding: "utf8" });
 
     const result = data
       .split("\n")
-      .map((shapesStr) => shapesStr.split(" "))
-      .reduce((total, [code, outcome]) => {
-        const opponentShape = SHAPES[code];
-        const ownShape = shapeToPlayForOutcome(opponentShape, outcome);
-        return total + ownShape.score + scoreForOutcome(outcome);
+      .map((str) => str.split(" "))
+      .reduce((total, [opponentShape, outcome]) => {
+        const ownShape = SHAPE_FOR_OUTCOME[opponentShape][outcome];
+        return total + SCORE_FOR_SHAPE[ownShape] + SCORE_FOR_OUTCOME[outcome];
       }, 0);
 
     console.log(result);
