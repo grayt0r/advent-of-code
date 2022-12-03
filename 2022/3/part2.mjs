@@ -20,6 +20,12 @@ function run() {
       groupedLines.push(lines.slice(index, (index += 3)));
     }
 
+    // ALTERNATIVE - think this might be a bit tricker to read?
+    // const groupedLines = Array.from(
+    //   { length: Math.ceil(lines.length / 3) },
+    //   (v, i) => lines.slice(i * 3, i * 3 + 3)
+    // );
+
     const result = groupedLines
       .map((group) => group.map((elf) => new Set(elf.split(""))))
       .flatMap(([elf1, elf2, elf3]) =>
