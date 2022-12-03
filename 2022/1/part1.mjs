@@ -1,8 +1,8 @@
-const fs = require("fs/promises");
+import { readFileSync } from "node:fs";
 
-async function run() {
+function run() {
   try {
-    const data = await fs.readFile("./input.txt", { encoding: "utf8" });
+    const data = readFileSync("./input.txt", { encoding: "utf8" });
 
     const totalCaloriesPerElf = data.split("\n\n").map((str) =>
       str
@@ -14,6 +14,8 @@ async function run() {
     const result = Math.max(...totalCaloriesPerElf);
 
     console.log(result);
+
+    // CORRECT ANSWER: 69501
   } catch (err) {
     console.error(err);
   }

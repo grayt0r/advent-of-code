@@ -1,8 +1,8 @@
-const fs = require("fs/promises");
+import { readFileSync } from "node:fs";
 
-async function run() {
+function run() {
   try {
-    const data = await fs.readFile("./input.txt", { encoding: "utf8" });
+    const data = readFileSync("./input.txt", { encoding: "utf8" });
 
     const totalCaloriesPerElf = data.split("\n\n").map((str) =>
       str
@@ -17,6 +17,8 @@ async function run() {
       .reduce((total, num) => total + num, 0);
 
     console.log(result);
+
+    // CORRECT ANSWER: 202346
   } catch (err) {
     console.error(err);
   }

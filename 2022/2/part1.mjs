@@ -1,6 +1,6 @@
-const fs = require("fs/promises");
+import { readFileSync } from "node:fs";
 
-async function run() {
+function run() {
   try {
     const ROCK = "A";
     const PAPER = "B";
@@ -40,8 +40,8 @@ async function run() {
       },
     };
 
-    // const data = await fs.readFile("./example.txt", { encoding: "utf8" });
-    const data = await fs.readFile("./input.txt", { encoding: "utf8" });
+    // const data = readFileSync("./example.txt", { encoding: "utf8" });
+    const data = readFileSync("./input.txt", { encoding: "utf8" });
 
     const result = data
       .split("\n")
