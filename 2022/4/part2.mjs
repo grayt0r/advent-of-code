@@ -27,6 +27,15 @@ function run() {
       )
       .filter(([a, b]) => isOverlap(a, b)).length;
 
+    // ALTERNATIVE: avoids some work / need for helper methods
+    // const result = lines
+    //   .map((l) =>
+    //     l.split(",").map((x) => x.split("-").map((y) => parseInt(y, 10)))
+    //   )
+    //   .filter(
+    //     ([[start1, end1], [start2, end2]]) => start2 <= end1 && end2 >= start1
+    //   ).length;
+
     console.log(result);
 
     // CORRECT ANSWER: 933
