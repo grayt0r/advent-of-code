@@ -21,6 +21,17 @@ function run() {
       }
     });
 
+    // ALTERNATIVE: can create the set directly from a sub string
+    // const result = lines.map((x) => {
+    //   for (let i = 0; i + MARKER_SIZE < x.length; i++) {
+    //     const s = new Set(x.substring(i, i + MARKER_SIZE));
+
+    //     if (s.size === MARKER_SIZE) {
+    //       return i + MARKER_SIZE;
+    //     }
+    //   }
+    // });
+
     // ALTERNATIVE
     // const result = lines.map((x) => {
     //   let chars = [];
