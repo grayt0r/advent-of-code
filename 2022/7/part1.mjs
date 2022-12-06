@@ -21,6 +21,26 @@ function run() {
       }
     });
 
+    // ALTERNATIVE
+    // const result = lines.map((x) => {
+    //   let chars = [];
+
+    //   for (let i = 0; i < x.length; i++) {
+    //     const c = x[i];
+    //     const existingIndex = chars.indexOf(c);
+
+    //     if (existingIndex >= 0) {
+    //       chars = chars.slice(existingIndex + 1);
+    //     }
+
+    //     chars.push(c);
+
+    //     if (chars.length === MARKER_SIZE) {
+    //       return i + 1;
+    //     }
+    //   }
+    // });
+
     console.log(result);
 
     // CORRECT EXAMPLE ANSWERS: 7, 5, 6, 10, 11
