@@ -43,15 +43,13 @@ function buildDirStructure(data) {
 }
 
 function calculateDirSizes(structure) {
-  const dirSizes = {};
-
-  function walkTree(obj, dirName) {
-    return Object.entries(obj).reduce((total, [k, v]) => {
+  function walkDirs(currentDir, dirName, dirCallback) {
+    return Object.entries(currentDir).reduce((total, [k, v]) => {
       if (typeof v === "object") {
-        const nestedDirName = dirName ? `${dirName}.${k}` : k;
-        const dirTotal = walkTree(v, nestedDirName);
+        const nestedDirName = dirName === "/" ? k : `${dirName}.${k}`;
+        const dirTotal = walkDirs(v, nestedDirName, dirCallback);
         total += dirTotal;
-        dirSizes[nestedDirName] = dirTotal;
+        dirCallback(nestedDirName, dirTotal);
       } else {
         total += v;
       }
@@ -60,8 +58,12 @@ function calculateDirSizes(structure) {
     }, 0);
   }
 
-  const totalSize = walkTree(structure);
-
+  const dirSizes = {};
+  const totalSize = walkDirs(
+    structure,
+    "/",
+    (dirName, size) => (dirSizes[dirName] = size)
+  );
   dirSizes["/"] = totalSize;
 
   return dirSizes;
