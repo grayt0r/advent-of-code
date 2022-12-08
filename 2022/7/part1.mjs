@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 
 function buildDirStructure(data) {
-  const commandsWithOuput = data
+  const commandsWithOutput = data
     .split("$ ")
     .slice(1)
     .map((x) => x.split("\n").filter(Boolean));
@@ -13,7 +13,7 @@ function buildDirStructure(data) {
     return dirChanges.reduce((a, b) => a[b], structure);
   }
 
-  commandsWithOuput.forEach(([command, ...output]) => {
+  commandsWithOutput.forEach(([command, ...output]) => {
     if (command === "ls") {
       const d = currentDir();
 
