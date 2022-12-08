@@ -27,7 +27,7 @@ function buildDirStructure(data) {
         }
       });
     } else {
-      const [_, d] = command.split(" ");
+      const [, d] = command.split(" ");
 
       if (d === "/") {
         dirChanges = [];
@@ -82,15 +82,16 @@ function buildDirSizes(data) {
       output
         .filter((o) => !o.startsWith("dir"))
         .forEach((o) => {
-          const [size, name] = o.split(" ");
+          const [sizeStr] = o.split(" ");
+          const size = parseInt(sizeStr, 10);
 
           dirChanges.forEach((_, i) => {
             const path = dirChanges.slice(0, i + 1).join(".");
-            dirSizes[path] = (dirSizes[path] ?? 0) + parseInt(size, 10);
+            dirSizes[path] = (dirSizes[path] ?? 0) + size;
           });
         });
     } else {
-      const [_, d] = command.split(" ");
+      const [, d] = command.split(" ");
 
       if (d === "/") {
         dirChanges = [d];

@@ -27,7 +27,7 @@ function buildDirStructure(data) {
         }
       });
     } else {
-      const [_, d] = command.split(" ");
+      const [, d] = command.split(" ");
 
       if (d === "/") {
         dirChanges = [];
@@ -80,6 +80,11 @@ function run() {
     const result = Object.values(dirSizes)
       .filter((v) => v > requiredSpace)
       .sort((a, b) => a - b)[0];
+
+    // ALTERNATIVE
+    // const result = Math.min(
+    //   ...Object.values(dirSizes).filter((v) => v > requiredSpace)
+    // );
 
     console.log(result);
 
