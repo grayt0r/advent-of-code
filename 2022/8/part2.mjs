@@ -52,6 +52,8 @@ function calculateScenicScore(grid, x, y) {
 
 function run() {
   try {
+    console.time("part2");
+
     // const data = readFileSync("./example.txt", { encoding: "utf8" });
     const data = readFileSync("./input.txt", { encoding: "utf8" });
 
@@ -74,6 +76,8 @@ function run() {
     console.log(result);
 
     // CORRECT ANSWER: 211680
+
+    console.timeEnd("part2");
   } catch (err) {
     console.error(err);
   }

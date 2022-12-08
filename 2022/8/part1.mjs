@@ -35,6 +35,8 @@ function calculateMinHeightToEdge(grid, x, y) {
 
 function run() {
   try {
+    console.time("part1");
+
     // const data = readFileSync("./example.txt", { encoding: "utf8" });
     const data = readFileSync("./input.txt", { encoding: "utf8" });
 
@@ -64,6 +66,8 @@ function run() {
     console.log(result);
 
     // CORRECT ANSWER: 1823
+
+    console.timeEnd("part1");
   } catch (err) {
     console.error(err);
   }
