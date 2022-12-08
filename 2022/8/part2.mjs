@@ -1,28 +1,45 @@
 import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 
-function buildArray(start, end) {
-  return Array.from({ length: end - start }, (_, i) => start + i);
-}
+// NOTE: if perf was a problem these helper methods
+// could be re-written to avoid creating the intermediate
+// arrays and just return the max height instead.
+// This would bring the timing down from ~40ms to ~18ms.
+// Example:
+// function getMaxHeightAbove(grid, x, y) {
+//   let maxH = 0;
+
+//   for (let i = 0; i < y; i++) {
+//     const h = grid[i][x];
+
+//     if (h === 9) {
+//       // this is the max height so return early
+//       return 9;
+//     } else if (h > maxH) {
+//       maxH = h;
+//     }
+//   }
+
+//   return maxH;
+// }
 
 function getHeightsAbove(grid, x, y) {
-  return buildArray(0, y)
-    .map((y2) => grid[y2][x])
+  return grid
+    .slice(0, y)
+    .map((col) => col[x])
     .reverse();
 }
 
 function getHeightsBelow(grid, x, y) {
-  return buildArray(y + 1, grid.length).map((y2) => grid[y2][x]);
+  return grid.slice(y + 1).map((col) => col[x]);
 }
 
 function getHeightsLeft(grid, x, y) {
-  return buildArray(0, x)
-    .map((x2) => grid[y][x2])
-    .reverse();
+  return grid[y].slice(0, x).reverse();
 }
 
 function getHeightsRight(grid, x, y) {
-  return buildArray(x + 1, grid[0].length).map((x2) => grid[y][x2]);
+  return grid[y].slice(x + 1);
 }
 
 function calculateMinHeightToEdge(grid, x, y) {
