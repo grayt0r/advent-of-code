@@ -67,6 +67,44 @@ function calculateDirSizes(structure) {
   return dirSizes;
 }
 
+// ALTERNATIVE
+function buildDirSizes(data) {
+  const commandsWithOutput = data
+    .split("$ ")
+    .slice(1)
+    .map((x) => x.split("\n").filter(Boolean));
+
+  let dirChanges = [];
+  const dirSizes = {};
+
+  commandsWithOutput.forEach(([command, ...output]) => {
+    if (command === "ls") {
+      output
+        .filter((o) => !o.startsWith("dir"))
+        .forEach((o) => {
+          const [size, name] = o.split(" ");
+
+          dirChanges.forEach((_, i) => {
+            const path = dirChanges.slice(0, i + 1).join(".");
+            dirSizes[path] = (dirSizes[path] ?? 0) + parseInt(size, 10);
+          });
+        });
+    } else {
+      const [_, d] = command.split(" ");
+
+      if (d === "/") {
+        dirChanges = [d];
+      } else if (d === "..") {
+        dirChanges.pop();
+      } else {
+        dirChanges.push(d);
+      }
+    }
+  });
+
+  return dirSizes;
+}
+
 function run() {
   try {
     // const data = readFileSync("./example.txt", { encoding: "utf8" });
@@ -74,6 +112,11 @@ function run() {
 
     const structure = buildDirStructure(data);
     const dirSizes = calculateDirSizes(structure);
+
+    // ALTERNATIVE: after seeing part 2 and knowing that we only ever care
+    // about dir sizes we can skip building the dir structure and just
+    // directly build the dir sizes
+    // const dirSizes = buildDirSizes(data);
 
     const result = Object.values(dirSizes)
       .filter((v) => v < 100000)
