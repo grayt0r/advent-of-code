@@ -56,15 +56,15 @@ function run() {
     // const data = readFileSync("./example.txt", { encoding: "utf8" });
     const data = readFileSync("./input.txt", { encoding: "utf8" });
 
-    const pairs = data
-      .split("\n\n")
-      .map((x) => x.split("\n").map((y) => JSON.parse(y)));
+    const packets = data
+      .split("\n")
+      .filter((x) => !!x.length)
+      .map((x) => JSON.parse(x));
 
     const divider1 = [[2]];
     const divider2 = [[6]];
 
-    const sortedPackets = pairs
-      .flat()
+    const sortedPackets = packets
       .concat([divider1, divider2])
       .sort((a, b) => compare(a, b));
 
