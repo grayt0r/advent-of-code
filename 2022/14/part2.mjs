@@ -38,7 +38,7 @@ function run() {
 
     // TODO: improve
     const allY = [...filledCoords].map((x) => parseInt(x.split(",")[1], 10));
-    const maxY = Math.max(...allY);
+    const maxY = Math.max(...allY) + 2;
 
     let sandCount = 0;
 
@@ -53,8 +53,7 @@ function run() {
         const belowLeft = [x - 1, y + 1];
         const belowRight = [x + 1, y + 1];
 
-        if (y >= maxY) {
-          position = null;
+        if (y + 1 >= maxY) {
           break;
         } else if (!filledCoords.has(coordToKey(below))) {
           position = below;
@@ -67,19 +66,20 @@ function run() {
         }
       }
 
-      if (position) {
-        filledCoords.add(coordToKey(position));
-        sandCount++;
-      } else {
+      filledCoords.add(coordToKey(position));
+      sandCount++;
+
+      if (position[0] === 500 && position[1] === 0) {
         break;
       }
     }
 
+    // TODO: improve perf?
     console.timeEnd("part1");
 
     console.log(sandCount);
 
-    // CORRECT ANSWER: 873
+    // CORRECT ANSWER: 24813
   } catch (err) {
     console.error(err);
   }
