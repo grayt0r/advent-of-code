@@ -15,7 +15,7 @@ function parseInput(data) {
 
         for (let j = startX; j <= endX; j++) {
           for (let k = startY; k <= endY; k++) {
-            result.add(coordToKey([j, k]));
+            result.add(coordToKey(j, k));
           }
         }
       }
@@ -24,8 +24,8 @@ function parseInput(data) {
     }, new Set());
 }
 
-function coordToKey(coord) {
-  return coord.join(",");
+function coordToKey(x, y) {
+  return x * 1000 + y;
 }
 
 function run() {
@@ -37,7 +37,7 @@ function run() {
     const SAND_START = [500, 0];
 
     // TODO: improve
-    const allY = [...filledCoords].map((x) => parseInt(x.split(",")[1], 10));
+    const allY = [...filledCoords].map((x) => x % 1000);
     const maxY = Math.max(...allY) + 2;
 
     let sandCount = 0;
@@ -45,36 +45,32 @@ function run() {
     console.time("part1");
 
     while (true) {
-      let position = SAND_START;
+      let [x, y] = SAND_START;
 
       while (true) {
-        const [x, y] = position;
-        const below = [x, y + 1];
-        const belowLeft = [x - 1, y + 1];
-        const belowRight = [x + 1, y + 1];
-
         if (y + 1 >= maxY) {
           break;
-        } else if (!filledCoords.has(coordToKey(below))) {
-          position = below;
-        } else if (!filledCoords.has(coordToKey(belowLeft))) {
-          position = belowLeft;
-        } else if (!filledCoords.has(coordToKey(belowRight))) {
-          position = belowRight;
+        } else if (!filledCoords.has(coordToKey(x, y + 1))) {
+          y++;
+        } else if (!filledCoords.has(coordToKey(x - 1, y + 1))) {
+          x--;
+          y++;
+        } else if (!filledCoords.has(coordToKey(x + 1, y + 1))) {
+          x++;
+          y++;
         } else {
           break;
         }
       }
 
-      filledCoords.add(coordToKey(position));
+      filledCoords.add(coordToKey(x, y));
       sandCount++;
 
-      if (position[0] === 500 && position[1] === 0) {
+      if (x === 500 && y === 0) {
         break;
       }
     }
 
-    // TODO: improve perf?
     console.timeEnd("part1");
 
     console.log(sandCount);
