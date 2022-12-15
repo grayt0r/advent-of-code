@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
 
+import { range, sortNumbers, zip } from "../utils.mjs";
+
 function parseInput(data) {
   return data
     .split("\n")
@@ -19,6 +21,18 @@ function parseInput(data) {
           }
         }
       }
+
+      // ALTERNATIVE: use some utils
+      // zip(line, line.slice(1)).forEach(([[x1, y1], [x2, y2]]) => {
+      //   const [startX, endX] = sortNumbers([x1, x2]);
+      //   const [startY, endY] = sortNumbers([y1, y2]);
+
+      //   range(startX, endX + 1).forEach((j) => {
+      //     range(startY, endY + 1).forEach((k) => {
+      //       result.add(coordToKey(j, k));
+      //     });
+      //   });
+      // });
 
       return result;
     }, new Set());
