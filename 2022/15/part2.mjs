@@ -13,15 +13,16 @@ function parseInput(data) {
       .map((y) => parseInt(y, 10));
 
     const sensor = [sensorX, sensorY];
-    const closestBeacon = [beaconX, beaconY];
-    const distanceToBeacon = calculateManhattanDistance(sensor, closestBeacon);
+    const distanceToBeacon = calculateManhattanDistance(sensor, [
+      beaconX,
+      beaconY,
+    ]);
 
     minX = Math.min(minX, sensorX - distanceToBeacon);
     maxX = Math.max(maxX, sensorX + distanceToBeacon);
 
     return {
       sensor,
-      closestBeacon,
       distanceToBeacon,
     };
   });
@@ -80,28 +81,33 @@ function run() {
     // const data = readFileSync("./example.txt", { encoding: "utf8" });
     const data = readFileSync("./input.txt", { encoding: "utf8" });
 
-    // example
-    // const Y_LINE = 10;
-    // input
-    const Y_LINE = 2_000_000;
+    const [input] = parseInput(data);
+    const minX = 0;
+    const maxX = 4_000_000;
 
-    const [input, minX, maxX] = parseInput(data);
+    console.time("part2");
 
-    // console.log("minX", minX);
-    // console.log("maxX", maxX);
+    let y;
+    let ranges;
 
-    console.time("part1");
+    for (y = 0; y < 4_000_000; y++) {
+      ranges = calculateRanges(input, y, minX, maxX);
 
-    const ranges = calculateRanges(input, Y_LINE, minX, maxX);
+      if (ranges.length > 1) {
+        break;
+      }
+    }
 
-    let result = ranges.reduce((t, [s, e]) => t + (e - s), 0);
+    const x = ranges[0][1] + 1;
 
-    console.timeEnd("part1");
+    const result = x * 4_000_000 + y;
+
+    console.timeEnd("part2");
 
     console.log(result);
 
-    // CORRECT EXAMPLE ANSWER: ?
-    // CORRECT ANSWER: ?
+    // CORRECT EXAMPLE ANSWER: 56000011
+    // CORRECT ANSWER: 10382630753392
   } catch (err) {
     console.error(err);
   }

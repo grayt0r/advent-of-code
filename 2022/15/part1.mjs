@@ -13,15 +13,16 @@ function parseInput(data) {
       .map((y) => parseInt(y, 10));
 
     const sensor = [sensorX, sensorY];
-    const closestBeacon = [beaconX, beaconY];
-    const distanceToBeacon = calculateManhattanDistance(sensor, closestBeacon);
+    const distanceToBeacon = calculateManhattanDistance(sensor, [
+      beaconX,
+      beaconY,
+    ]);
 
     minX = Math.min(minX, sensorX - distanceToBeacon);
     maxX = Math.max(maxX, sensorX + distanceToBeacon);
 
     return {
       sensor,
-      closestBeacon,
       distanceToBeacon,
     };
   });
@@ -94,7 +95,7 @@ function run() {
 
     const ranges = calculateRanges(input, Y_LINE, minX, maxX);
 
-    let result = ranges.reduce((t, [s, e]) => t + (e - s), 0);
+    const result = ranges.reduce((t, [s, e]) => t + (e - s), 0);
 
     console.timeEnd("part1");
 
