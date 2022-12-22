@@ -11,10 +11,15 @@ function run() {
 
     console.time("time");
 
-    const numbers = data.split("\n").map((x) => parseInt(x, 10));
+    const numbers = data.split("\n").map((x) => parseInt(x, 10) * 811589153);
     const indices = Array.from({ length: numbers.length }, (_, i) => i);
 
-    [...indices].forEach((i) => {
+    const loop = Array.from(
+      { length: numbers.length * 10 },
+      (_, i) => i % numbers.length
+    );
+
+    loop.forEach((i) => {
       const j = indices.indexOf(i);
       indices.splice(j, 1);
       indices.splice(mod(j + numbers[i], indices.length), 0, i);
@@ -30,8 +35,8 @@ function run() {
 
     console.log(result);
 
-    // CORRECT EXAMPLE ANSWER: ?
-    // CORRECT ANSWER: ?
+    // CORRECT EXAMPLE ANSWER: 1623178306
+    // CORRECT ANSWER: 2488332343098
   } catch (err) {
     console.error(err);
   }
