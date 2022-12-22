@@ -19,9 +19,9 @@ function getNeighbourCoords([x, y, z]) {
   ];
 }
 
-function countOpenSides(cube, cubes) {
+function countOpenSides(cube, air) {
   return getNeighbourCoords(keyToCoords(cube)).reduce((total, coords) => {
-    if (!cubes.has(coordsToKey(...coords))) {
+    if (air.has(coordsToKey(...coords))) {
       total++;
     }
 
@@ -91,17 +91,9 @@ function run() {
 
     const outerAir = walk(coordsToKey(0, 0, 0), air);
 
-    const innerAir = new Set([...air].filter((a) => !outerAir.has(a)));
-
-    const totalArea = [...cubes]
-      .map((c) => countOpenSides(c, cubes))
+    const result = [...cubes]
+      .map((c) => countOpenSides(c, outerAir))
       .reduce((a, b) => a + b, 0);
-
-    const innerArea = [...innerAir]
-      .map((c) => countOpenSides(c, innerAir))
-      .reduce((a, b) => a + b, 0);
-
-    const result = totalArea - innerArea;
 
     console.timeEnd("time");
 
